@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowRight, Plane, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowRight, Plane } from 'lucide-react';
 import { Language, ProjectType, ServiceItem } from './types';
 
 // Navigation & Layout
@@ -17,6 +17,7 @@ import { TestimonialCard } from './components/cards/TestimonialCard';
 import { ProcessStep } from './components/cards/ProcessStep';
 import { FAQAccordion } from './components/faq/FAQAccordion';
 import { LeadModal } from './components/lead/LeadModal';
+import { ServicePageTemplate } from './components/services/ServicePageTemplate';
 
 // Dedicated Sections
 import { Hero } from './components/hero/Hero';
@@ -33,11 +34,81 @@ import { languagesData } from './data/languages';
 import { testimonialsData } from './data/testimonials';
 import { faqData } from './data/faq';
 import { processStepsData } from './data/process';
+import { serviceDetailsData } from './data/serviceDetails';
 
 export default function App() {
   const [lang, setLang] = useState<Language>('fr');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<ProjectType>('etudes');
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname || '/';
+    }
+    return '/';
+  });
+
+  // Keep route in sync with browser back / forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname || '/');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Determine current active service if on a service route
+  const getServiceDataForPath = (path: string) => {
+    const cleanPath = path.replace(/\/$/, '');
+    if (cleanPath === '/services/assistance-visa') return serviceDetailsData['assistance-visa'];
+    if (cleanPath === '/services/billets-avion') return serviceDetailsData['billets-avion'];
+    if (cleanPath === '/services/formation-professionnelle') return serviceDetailsData['formation-professionnelle'];
+    if (cleanPath === '/services/cours-langues') return serviceDetailsData['cours-langues'];
+    if (cleanPath === '/services/auto-ecole') return serviceDetailsData['auto-ecole'];
+    return null;
+  };
+
+  const activeServiceData = getServiceDataForPath(currentPath);
+
+  // SEO: Update page title and meta description dynamically
+  useEffect(() => {
+    let title = 'FutureLearn — Éducation, Mobilité Internationale & Formations';
+    let description = 'Plateforme d’éducation, mobilité internationale, formations professionnelles et assistance visa à Yaoundé.';
+
+    if (activeServiceData) {
+      title = activeServiceData.seo.title[lang];
+      description = activeServiceData.seo.description[lang];
+    } else if (lang === 'en') {
+      title = 'FutureLearn — Education, International Mobility & Training';
+      description = 'Platform for education, international mobility, vocational training and visa assistance in Yaoundé.';
+    }
+
+    document.title = title;
+
+    // Update Meta Description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', description);
+
+    // Update Open Graph Tags
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
+
+    let ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', description);
+  }, [currentPath, lang, activeServiceData]);
+
+  // Clean navigation helper
+  const navigate = (path: string) => {
+    if (typeof window !== 'undefined' && path !== window.location.pathname) {
+      window.history.pushState(null, '', path);
+    }
+    setCurrentPath(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleOpenAdvisor = (project: ProjectType = 'etudes') => {
     setSelectedProject(project);
@@ -45,18 +116,27 @@ export default function App() {
   };
 
   const handleSelectService = (service: ServiceItem) => {
-    const projectMap: Record<string, ProjectType> = {
-      visa: 'visa',
-      flight: 'billet',
-      training: 'formation',
-      language: 'langues',
-      driving: 'auto-ecole',
-    };
-    handleOpenAdvisor(projectMap[service.id] || 'autre');
+    navigate(service.slug);
   };
 
-  const handleScrollTo = (id: string) => {
-    const el = document.getElementById(id);
+  const handleNavigateTarget = (target: string) => {
+    if (target === 'accueil' || target === '') {
+      navigate('/');
+      return;
+    }
+
+    // If currently on a service page and clicking section anchors
+    if (currentPath !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(target);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+
+    // Otherwise scroll smoothly on homepage
+    const el = document.getElementById(target);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -72,18 +152,27 @@ export default function App() {
         onLanguageChange={setLang}
         onOpenAdvisorModal={() => handleOpenAdvisor('etudes')}
         onSelectService={handleSelectService}
-        onNavigate={handleScrollTo}
+        onNavigate={handleNavigateTarget}
       />
 
       <main className="flex-1">
-        {/* =========================================================================
-            02 — HERO
-            ========================================================================= */}
-        <Hero
-          lang={lang}
-          onOpenAdvisor={() => handleOpenAdvisor('etudes')}
-          onExploreServices={() => handleScrollTo('services')}
-        />
+        {activeServiceData ? (
+          <ServicePageTemplate
+            data={activeServiceData}
+            lang={lang}
+            onOpenAdvisor={handleOpenAdvisor}
+            onNavigateHome={() => navigate('/')}
+          />
+        ) : (
+          <>
+            {/* =========================================================================
+                02 — HERO
+                ========================================================================= */}
+            <Hero
+              lang={lang}
+              onOpenAdvisor={() => handleOpenAdvisor('etudes')}
+              onExploreServices={() => handleNavigateTarget('services')}
+            />
 
         {/* =========================================================================
             03 — NOS SERVICES
@@ -328,20 +417,12 @@ export default function App() {
                 </h2>
               </div>
 
-              {/* Navigation arrows hint */}
-              <div className="flex items-center gap-2">
-                <button
-                  aria-label="Témoignage précédent"
-                  className="p-2 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-neutral-700 transition-colors cursor-pointer"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
-                <button
-                  aria-label="Témoignage suivant"
-                  className="p-2 rounded-full border border-neutral-200 bg-white hover:bg-neutral-100 text-neutral-700 transition-colors cursor-pointer"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+              {/* Verified Trust Badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-neutral-200 shadow-2xs text-xs font-semibold text-neutral-700">
+                <span className="w-2 h-2 rounded-full bg-[#F5B800]" />
+                <span>
+                  {lang === 'fr' ? 'Retours d’expérience vérifiés' : 'Verified experience feedback'}
+                </span>
               </div>
             </div>
 
@@ -383,6 +464,8 @@ export default function App() {
           lang={lang}
           onOpenAdvisor={() => handleOpenAdvisor('etudes')}
         />
+          </>
+        )}
       </main>
 
       {/* =========================================================================
@@ -391,7 +474,7 @@ export default function App() {
       <Footer
         lang={lang}
         onSelectService={handleSelectService}
-        onNavigate={handleScrollTo}
+        onNavigate={handleNavigateTarget}
       />
 
       {/* Lead Generation Modal */}

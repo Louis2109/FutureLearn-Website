@@ -25,6 +25,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
           alt={service.title[lang]}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           loading="lazy"
+          referrerPolicy="no-referrer"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
         

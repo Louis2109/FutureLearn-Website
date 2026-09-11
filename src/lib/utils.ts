@@ -12,11 +12,19 @@ export function generateWhatsAppLink(params: {
   projectType: string;
   destination?: string;
   message?: string;
+  lang?: 'fr' | 'en';
 }): string {
   const cleanPhone = params.phone.replace(/[^0-9]/g, '');
-  const destinationText = params.destination ? ` | Destination : ${params.destination}` : '';
-  const userMsgText = params.message ? ` | Précisions : ${params.message}` : '';
-  const text = `Bonjour FutureLearn, je suis ${params.fullName}. Je souhaite être accompagné(e) pour mon projet de ${params.projectType}${destinationText}.${userMsgText}`;
+  const lang = params.lang || 'fr';
+
+  let text: string;
+  if (lang === 'fr') {
+    const dest = params.destination ? ` Destination souhaitée : ${params.destination}.` : '';
+    text = `Bonjour FutureLearn, je suis ${params.fullName}. Je souhaite être accompagné pour mon projet de ${params.projectType}.${dest}`;
+  } else {
+    const dest = params.destination ? ` Desired destination: ${params.destination}.` : '';
+    text = `Hello FutureLearn, I am ${params.fullName}. I would like support with my ${params.projectType} project.${dest}`;
+  }
   
-  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text)}`;
+  return `https://wa.me/${cleanPhone}?text=${encodeURIComponent(text.trim())}`;
 }

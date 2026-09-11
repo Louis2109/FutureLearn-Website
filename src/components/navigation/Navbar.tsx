@@ -163,26 +163,33 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             {/* Right Controls: Lang + CTA */}
             <div className="hidden sm:flex items-center gap-3">
-              {/* Language Switcher */}
-              <div className="inline-flex rounded-full p-0.5 bg-neutral-100 border border-neutral-200">
+              {/* Language Switcher FR | EN */}
+              <div
+                className="inline-flex items-center rounded-full p-1 bg-neutral-100 border border-neutral-200"
+                role="group"
+                aria-label={lang === 'fr' ? 'Sélecteur de langue' : 'Language selector'}
+              >
                 <button
                   onClick={() => onLanguageChange('fr')}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-full transition-all ${
+                  className={`px-2.5 py-1 text-xs font-bold rounded-full transition-all cursor-pointer ${
                     lang === 'fr'
                       ? 'bg-neutral-900 text-white shadow-xs'
                       : 'text-neutral-600 hover:text-neutral-900'
                   }`}
+                  aria-pressed={lang === 'fr'}
                   aria-label="Passer en français"
                 >
                   FR
                 </button>
+                <span className="text-neutral-300 text-xs px-1 select-none font-semibold">|</span>
                 <button
                   onClick={() => onLanguageChange('en')}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-full transition-all ${
+                  className={`px-2.5 py-1 text-xs font-bold rounded-full transition-all cursor-pointer ${
                     lang === 'en'
                       ? 'bg-neutral-900 text-white shadow-xs'
                       : 'text-neutral-600 hover:text-neutral-900'
                   }`}
+                  aria-pressed={lang === 'en'}
                   aria-label="Switch to English"
                 >
                   EN
@@ -201,17 +208,36 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Button>
             </div>
 
-            {/* Mobile Hamburger */}
+            {/* Mobile Controls: FR | EN + Hamburger */}
             <div className="flex sm:hidden items-center gap-2">
-              <button
-                onClick={() => onLanguageChange(lang === 'fr' ? 'en' : 'fr')}
-                className="px-2.5 py-1 text-xs font-bold bg-neutral-100 rounded-full border border-neutral-200"
+              <div
+                className="inline-flex items-center rounded-full p-0.5 bg-neutral-100 border border-neutral-200"
+                role="group"
+                aria-label="Sélecteur de langue"
               >
-                {lang.toUpperCase()}
-              </button>
+                <button
+                  onClick={() => onLanguageChange('fr')}
+                  className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                    lang === 'fr' ? 'bg-neutral-900 text-white' : 'text-neutral-600'
+                  }`}
+                  aria-pressed={lang === 'fr'}
+                >
+                  FR
+                </button>
+                <span className="text-neutral-300 text-[10px] px-0.5 select-none">|</span>
+                <button
+                  onClick={() => onLanguageChange('en')}
+                  className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                    lang === 'en' ? 'bg-neutral-900 text-white' : 'text-neutral-600'
+                  }`}
+                  aria-pressed={lang === 'en'}
+                >
+                  EN
+                </button>
+              </div>
               <button
                 onClick={() => setMobileMenuOpen(true)}
-                aria-label="Ouvrir le menu"
+                aria-label={lang === 'fr' ? 'Ouvrir le menu' : 'Open menu'}
                 className="p-2 text-neutral-700 hover:text-neutral-950 rounded-lg hover:bg-neutral-100"
               >
                 <Menu className="w-6 h-6" />

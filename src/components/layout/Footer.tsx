@@ -197,8 +197,8 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Scroll to Top Button */}
           <button
             onClick={scrollToTop}
-            aria-label="Retour en haut"
-            className="w-9 h-9 rounded-full bg-[#F5B800] hover:bg-[#E0A800] text-neutral-950 flex items-center justify-center shadow-xs transition-transform hover:-translate-y-0.5 cursor-pointer"
+            aria-label={lang === 'fr' ? 'Retour en haut de page' : 'Back to top'}
+            className="w-9 h-9 rounded-full bg-[#F5B800] hover:bg-[#E0A800] text-neutral-950 flex items-center justify-center shadow-xs transition-transform hover:-translate-y-0.5 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900"
           >
             <ArrowUp className="w-4 h-4" />
           </button>

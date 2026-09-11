@@ -32,6 +32,8 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({
         <img
           src={testimonial.avatar}
           alt={testimonial.name}
+          loading="lazy"
+          referrerPolicy="no-referrer"
           className="w-11 h-11 rounded-full object-cover border border-neutral-200 flex-shrink-0"
         />
         <div className="flex flex-col">

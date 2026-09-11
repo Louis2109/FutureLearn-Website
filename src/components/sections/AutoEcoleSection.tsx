@@ -147,7 +147,7 @@ export const AutoEcoleSection: React.FC<AutoEcoleSectionProps> = ({
                 {lang === 'fr' ? 'Pédagogie bienveillante' : 'Supportive Teaching'}
               </div>
               <div className="text-neutral-500">
-                {lang === 'fr' ? 'Taux élevé de réussite à l’examen' : 'High exam pass rate'}
+                {lang === 'fr' ? 'Préparation rigoureuse à l’examen officiel' : 'Thorough preparation for the official exam'}
               </div>
             </div>
           </div>

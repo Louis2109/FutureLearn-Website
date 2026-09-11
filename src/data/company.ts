@@ -102,24 +102,24 @@ export const i18nDictionary = {
   },
   stats: {
     accompanied: {
-      count: '+500',
+      count: '6',
       label: {
-        fr: 'Personnes accompagnées',
-        en: 'People supported',
+        fr: 'Pôles d’expertise',
+        en: 'Core service areas',
       },
     },
     destinations: {
-      count: '10',
+      count: '10+',
       label: {
-        fr: 'Destinations principales',
-        en: 'Main destinations',
+        fr: 'Destinations mondiales',
+        en: 'Global destinations',
       },
     },
     satisfaction: {
-      count: '95%',
+      count: 'Yaoundé',
       label: {
-        fr: 'Taux de satisfaction',
-        en: 'Satisfaction rate',
+        fr: 'Agence Biyem-Assi & en ligne',
+        en: 'Biyem-Assi office & online',
       },
     },
   },

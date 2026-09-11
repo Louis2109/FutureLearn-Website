@@ -21,9 +21,11 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ items, lang }) => {
         return (
           <div key={item.id} className="py-4 sm:py-5">
             <button
+              id={`faq-btn-${item.id}`}
               onClick={() => toggleItem(item.id)}
               className="w-full flex items-center justify-between text-left gap-4 font-bold text-base sm:text-lg text-neutral-900 hover:text-neutral-950 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F5B800] rounded-lg transition-colors cursor-pointer"
               aria-expanded={isOpen}
+              aria-controls={`faq-panel-${item.id}`}
             >
               <span>{item.question[lang]}</span>
               <span className="flex-shrink-0 p-1 rounded-full bg-neutral-100 text-neutral-800 transition-colors">
@@ -31,7 +33,12 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ items, lang }) => {
               </span>
             </button>
             {isOpen && (
-              <div className="mt-3 text-neutral-600 text-sm sm:text-base leading-relaxed pr-8 animate-in fade-in duration-200">
+              <div
+                id={`faq-panel-${item.id}`}
+                role="region"
+                aria-labelledby={`faq-btn-${item.id}`}
+                className="mt-3 text-neutral-600 text-sm sm:text-base leading-relaxed pr-8 animate-in fade-in duration-200"
+              >
                 {item.answer[lang]}
               </div>
             )}

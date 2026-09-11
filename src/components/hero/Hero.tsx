@@ -131,6 +131,8 @@ export const Hero: React.FC<HeroProps> = ({
                 src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=900&q=80"
                 alt="Jeune étudiante et voyageuse accompagnée par FutureLearn"
                 className="w-full aspect-[4/5] object-cover object-center"
+                loading="eager"
+                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 

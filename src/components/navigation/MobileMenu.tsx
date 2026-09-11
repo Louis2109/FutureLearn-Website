@@ -26,6 +26,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 }) => {
   const [servicesExpanded, setServicesExpanded] = useState(true);
 
+  // Close on Escape key
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -116,24 +126,31 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
             <span className="text-sm font-medium text-neutral-500">
               {lang === 'fr' ? 'Langue' : 'Language'}
             </span>
-            <div className="inline-flex rounded-full p-1 bg-neutral-100 border border-neutral-200">
+            <div
+              className="inline-flex items-center rounded-full p-1 bg-neutral-100 border border-neutral-200"
+              role="group"
+              aria-label={lang === 'fr' ? 'Sélecteur de langue' : 'Language selector'}
+            >
               <button
                 onClick={() => onLanguageChange('fr')}
-                className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                className={`px-3 py-1 text-xs font-bold rounded-full transition-all cursor-pointer ${
                   lang === 'fr'
                     ? 'bg-neutral-900 text-white shadow-xs'
                     : 'text-neutral-600 hover:text-neutral-900'
                 }`}
+                aria-pressed={lang === 'fr'}
               >
                 FR
               </button>
+              <span className="text-neutral-300 text-xs px-1 select-none font-semibold">|</span>
               <button
                 onClick={() => onLanguageChange('en')}
-                className={`px-3 py-1 text-xs font-bold rounded-full transition-all ${
+                className={`px-3 py-1 text-xs font-bold rounded-full transition-all cursor-pointer ${
                   lang === 'en'
                     ? 'bg-neutral-900 text-white shadow-xs'
                     : 'text-neutral-600 hover:text-neutral-900'
                 }`}
+                aria-pressed={lang === 'en'}
               >
                 EN
               </button>

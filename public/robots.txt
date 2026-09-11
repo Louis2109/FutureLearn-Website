@@ -1,0 +1,6 @@
+# FutureLearn robots.txt
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://futurelearn.cm/sitemap.xml
