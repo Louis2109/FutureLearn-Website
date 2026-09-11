@@ -78,6 +78,26 @@ export interface FAQItem {
   category?: string;
 }
 
+export interface ProcessStepItem {
+  number: string;
+  title: Record<Language, string>;
+  description: Record<Language, string>;
+  iconName: string;
+}
+
+export interface PillarItem {
+  id: string;
+  title: Record<Language, string>;
+  description: Record<Language, string>;
+  iconName: string;
+}
+
+export interface NavLinkItem {
+  label: Record<Language, string>;
+  href: string;
+  hasDropdown?: boolean;
+}
+
 export interface LeadFormData {
   fullName: string;
   phoneOrWhatsApp: string;
