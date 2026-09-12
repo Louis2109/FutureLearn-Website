@@ -50,8 +50,8 @@ export const destinationsData: Destination[] = [
     image: 'https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=600&q=80',
   },
   {
-    id: 'espagne',
-    name: { fr: 'Espagne', en: 'Spain' },
-    image: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&w=600&q=80',
+    id: 'turquie',
+    name: { fr: 'Turquie', en: 'Turkey' },
+    image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=600&q=80',
   },
 ];

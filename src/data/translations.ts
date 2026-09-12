@@ -172,7 +172,7 @@ export const translations: TranslationDictionary = {
     royaume_uni: { fr: 'Royaume-Uni', en: 'United Kingdom' },
     etats_unis: { fr: 'États-Unis', en: 'United States' },
     chine: { fr: 'Chine', en: 'China' },
-    espagne: { fr: 'Espagne', en: 'Spain' },
+    turquie: { fr: 'Turquie', en: 'Turkey' },
     autre: { fr: 'Autre', en: 'Other' },
   },
 };
@@ -187,6 +187,6 @@ export const destinationList: { id: string; name: Record<Language, string> }[] =
   { id: 'royaume_uni', name: { fr: 'Royaume-Uni', en: 'United Kingdom' } },
   { id: 'etats_unis', name: { fr: 'États-Unis', en: 'United States' } },
   { id: 'chine', name: { fr: 'Chine', en: 'China' } },
-  { id: 'espagne', name: { fr: 'Espagne', en: 'Spain' } },
+  { id: 'turquie', name: { fr: 'Turquie', en: 'Turkey' } },
   { id: 'autre', name: { fr: 'Autre', en: 'Other' } },
 ];
